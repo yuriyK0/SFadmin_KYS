@@ -1,0 +1,22 @@
+---
+- name: Install and configure Zabbix Agent
+  hosts: vpn.my
+  become: yes
+
+  tasks:
+    - name: Install Zabbix Agent
+      apt:
+        name: zabbix-agent
+        state: present
+      notify:
+        - Start Zabbix Agent
+
+    - name: Configure Zabbix Agent
+      lineinfile:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: '^Server='
+        line: 'Server=5.42.83.208'
+      notify:
+        - Restart Zabbix Agent
+
+
